@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Logo from "./Logo";
+import Logo, { LogoMobile } from "./Logo";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "./ui/button";
@@ -46,16 +46,18 @@ function MobileNavbar() {
                   key={items.label}
                   link={items.link}
                   label={items.label}
+                  onClick={() => setIsOpen((prev) => !prev)}
                 />
               ))}
             </div>
           </SheetContent>
         </Sheet>
         <div className="flex h-[80px] min-h-[60px] items-center gap-x-4">
-          <Logo />
+          <LogoMobile />
         </div>
         <div className="flex items-center gap-2">
           <ThemeSwitcherButton />
+          <UserButton afterSignOutUrl="/sign-in" />
         </div>
       </nav>
     </div>
@@ -86,7 +88,15 @@ function DesktopNavbar() {
     </div>
   );
 }
-function NavbarItem({ link, label }: { link: string; label: string }) {
+function NavbarItem({
+  link,
+  label,
+  onClick,
+}: {
+  link: string;
+  label: string;
+  onClick?: () => void;
+}) {
   const pathname = usePathname();
   const isActive = pathname === link;
 
@@ -99,6 +109,11 @@ function NavbarItem({ link, label }: { link: string; label: string }) {
           "w-full justify-start text-lg text-muted-foreground hover:text-foreground",
           isActive && "text-foreground"
         )}
+        onClick={() => {
+          if (onClick) {
+            onClick();
+          }
+        }}
       >
         {label}
       </Link>
