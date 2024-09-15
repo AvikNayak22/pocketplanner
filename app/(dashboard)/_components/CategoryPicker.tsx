@@ -1,11 +1,14 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Command, CommandInput } from "@/components/ui/command";
 import { Popover } from "@/components/ui/popover";
 import { TransactionType } from "@/lib/types";
 import { Category } from "@prisma/client";
-import { PopoverTrigger } from "@radix-ui/react-popover";
+import { PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import CreateCategoryDialog from "./CreateCategoryDialog";
 
 interface Props {
   type: TransactionType;
@@ -29,9 +32,41 @@ const CategoryPicker = ({ type }: Props) => {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild></PopoverTrigger>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-[200px] justify-between"
+        >
+          {selectedCategory ? (
+            <CategoryRow category={selectedCategory} />
+          ) : (
+            "Select Category"
+          )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[200px] p-0">
+        <Command
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <CommandInput placeholder="Search category..." />
+          <CreateCategoryDialog type={type} />
+        </Command>
+      </PopoverContent>
     </Popover>
   );
 };
 
 export default CategoryPicker;
+
+function CategoryRow({ category }: { category: Category }) {
+  return (
+    <div className="flex items-center gap-2">
+      <span role="img">{category.icon}</span>
+      <span>{category.name}</span>
+    </div>
+  );
+}
