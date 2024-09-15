@@ -25,6 +25,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import CategoryPicker from "./CategoryPicker";
 
 interface Props {
   trigger: ReactNode;
@@ -94,6 +95,25 @@ const CreateTransactionDialog = ({ trigger, type }: Props) => {
                 );
               }}
             />
+            <div className="flex items-center justify-between gap-2">
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Category</FormLabel>
+                      <FormControl>
+                        <CategoryPicker type={type} />
+                      </FormControl>
+                      <FormDescription>
+                        Select a category for this transaction
+                      </FormDescription>
+                    </FormItem>
+                  );
+                }}
+              />
+            </div>
           </form>
         </Form>
       </DialogContent>
