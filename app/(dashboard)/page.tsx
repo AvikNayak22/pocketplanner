@@ -24,7 +24,7 @@ const page = async () => {
   return (
     <div className="h-full bg-background">
       <div className="border-b bg-card">
-        <div className="container flex flex-wrap items-center justify-between gap-6 py-8">
+        <div className="container flex flex-wrap items-center justify-between gap-6 py-8 mx-auto">
           <p className="text-3xl font-bold">Hello, {user.firstName}! 🖐️</p>
 
           <div className="flex items-center gap-3">
@@ -34,7 +34,7 @@ const page = async () => {
                   variant="outline"
                   className="border-emerald-500 bg-emerald-950 text-white hover:bg-emerald-700 hover:text-white"
                 >
-                  New income 🪙
+                  New income 🤑
                 </Button>
               }
               type="income"
