@@ -53,6 +53,7 @@ const page = async () => {
           </div>
         </div>
       </div>
+      <Overview userSettings={userSettings}/>
     </div>
   );
 };

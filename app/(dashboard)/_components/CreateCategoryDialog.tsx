@@ -34,17 +34,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleOff, Loader2, PlusSquareIcon } from "lucide-react";
 import { useCallback, useState } from "react";
 import { Form, useForm } from "react-hook-form";
-import EmojiPicker from "emoji-picker-react";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createCategory } from "../_actions/categories";
 import { Category } from "@prisma/client";
 import { toast } from "sonner";
+import { useTheme } from "next-themes";
 
 interface Props {
   type: TransactionType;
+  successCallback: (category: Category) => void;
 }
 
-const CreateCategoryDialog = ({ type }: Props) => {
+const CreateCategoryDialog = ({ type, successCallback }: Props) => {
   const [open, setOpen] = useState(false);
   const form = useForm<CreateCategorySchemaType>({
     resolver: zodResolver(CreateCategorySchema),
@@ -54,6 +57,7 @@ const CreateCategoryDialog = ({ type }: Props) => {
   });
 
   const queryClient = useQueryClient();
+  const theme = useTheme();
 
   const { mutate, isPending } = useMutation({
     mutationFn: createCategory,
@@ -67,6 +71,8 @@ const CreateCategoryDialog = ({ type }: Props) => {
       toast.success(`Category ${data.name} created successfully!`, {
         id: "create-category",
       });
+
+      successCallback(data);
 
       await queryClient.invalidateQueries({
         queryKey: ["categories"],
@@ -131,10 +137,10 @@ const CreateCategoryDialog = ({ type }: Props) => {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input defaultValue="" {...field} />
+                      <Input placeholder="Category" {...field} />
                     </FormControl>
                     <FormDescription>
-                      Transaction description (optional)
+                      This is how your category will appear in the app
                     </FormDescription>
                   </FormItem>
                 );
@@ -174,9 +180,11 @@ const CreateCategoryDialog = ({ type }: Props) => {
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-full">
-                          <EmojiPicker
-                            onEmojiClick={(emojiObject: { emoji: string }) => {
-                              field.onChange(emojiObject.emoji);
+                          <Picker
+                            theme={theme.resolvedTheme}
+                            data={data}
+                            onEmojiSelect={(emoji: { native: string }) => {
+                              field.onChange(emoji.native);
                             }}
                           />
                         </PopoverContent>
