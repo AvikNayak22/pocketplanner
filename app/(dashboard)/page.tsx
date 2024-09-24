@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 import CreateTransactionDialog from "./_components/CreateTransactionDialog";
 import Overview from "./_components/Overview";
+import History from "./_components/History";
 
 const page = async () => {
   const user = await currentUser();
@@ -56,6 +57,7 @@ const page = async () => {
       </div>
       <div className="container flex flex-col gap-2 py-6 mx-auto">
         <Overview userSettings={userSettings} />
+        <History userSettings={userSettings} />
       </div>
     </div>
   );
