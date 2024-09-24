@@ -54,7 +54,9 @@ const page = async () => {
           </div>
         </div>
       </div>
-      <Overview userSettings={userSettings} />
+      <div className="container flex flex-col gap-2 py-6 mx-auto">
+        <Overview userSettings={userSettings} />
+      </div>
     </div>
   );
 };
