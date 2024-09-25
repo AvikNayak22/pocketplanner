@@ -8,7 +8,7 @@ export async function GET(request: Request) {
     redirect("/sign-in");
   }
 
-  const periods = getHistoryPeriods(user.id);
+  const periods = await getHistoryPeriods(user.id);
   return Response.json(periods);
 }
 
@@ -33,4 +33,10 @@ async function getHistoryPeriods(userId: string) {
   });
 
   const years = result.map((el) => el.year);
+  if (years.length === 0) {
+    //return the current year
+    return [new Date().getFullYear()];
+  }
+
+  return years;
 }
